@@ -4,12 +4,11 @@
 pthread_mutex_t lock;
 
 void* t(void* i){
-  pthread_mutex_lock(&lock);
-  printf("thread ");
-  printf(i);
-  printf("\n");
-  pthread_mutex_unlock(&lock);
-  return NULL;
+    int* id = (int *)i;
+    pthread_mutex_lock(&lock);
+    printf("thread %d \n", *id);
+    pthread_mutex_unlock(&lock);
+    return NULL;
 }
 
 
@@ -19,7 +18,7 @@ int main(){
     pthread_mutex_init(&lock, NULL);
 
     for (int i = 0; i < n; i++)
-        pthread_create(&thr[i], NULL, &t, &i);
+        pthread_create(&thr[i], NULL, &t,  (void*)&i);
 
     pthread_mutex_destroy(&lock);
     for (size_t i = 0; i < n; i++)
